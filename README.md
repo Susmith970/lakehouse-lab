@@ -2,7 +2,7 @@
 
 A working reference implementation of an open lakehouse: **PySpark → Apache Iceberg → Dremio / Snowflake**, running locally on a laptop and on AWS with the same code.
 
-The goal is to demonstrate the patterns real data platforms need — layered configuration, testable transforms, idempotent writes, table maintenance — rather than a one-file notebook demo.
+The goal is to demonstrate the patterns real data platforms need  layered configuration, testable transforms, idempotent writes, table maintenance  rather than a one-file notebook demo.
 
 ## Architecture
 
