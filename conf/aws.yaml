@@ -1,0 +1,10 @@
+# AWS: Glue Data Catalog + S3. Point the warehouse at your own bucket, or
+# override at runtime with LAKEHOUSE_CATALOG__WAREHOUSE=s3://my-bucket/warehouse
+namespace: taxi
+app_name: lakehouse-lab-aws
+shuffle_partitions: 200
+
+catalog:
+  name: lakehouse
+  type: glue
+  warehouse: s3://REPLACE-ME/warehouse

@@ -1,0 +1,9 @@
+# Local development: Hadoop catalog writing Iceberg tables to ./warehouse
+namespace: taxi
+app_name: lakehouse-lab-local
+shuffle_partitions: 8
+
+catalog:
+  name: lakehouse
+  type: hadoop
+  warehouse: ./warehouse
