@@ -39,5 +39,8 @@ jobs:
       - name: Lint
         run: ruff check src tests
 
+      - name: Format check
+        run: ruff format --check src tests
+
       - name: Test
         run: pytest -q --cov=lakehouse --cov-report=term-missing

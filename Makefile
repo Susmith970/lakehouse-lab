@@ -1,10 +1,14 @@
-.PHONY: install lint fmt test ingest clean
+.PHONY: install lint fmt check test ingest clean
 
 install:
 	python -m pip install -e ".[dev]"
 
 lint:
 	ruff check src tests
+
+check:
+	ruff check src tests
+	ruff format --check src tests
 
 fmt:
 	ruff check --fix src tests
