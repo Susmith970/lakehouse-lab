@@ -80,7 +80,8 @@ src/lakehouse/
 ├── session.py          # SparkSession + Iceberg wiring
 ├── tables.py           # Iceberg write helpers
 └── jobs/
-    └── ingest_taxi.py  # bronze ingestion
+    ├── ingest_taxi.py  # bronze ingestion
+    └── silver_taxi.py  # silver: cast, quality rules, dedup
 conf/                   # local.yaml (Hadoop catalog) / aws.yaml (Glue)
 tests/                  # 31 tests, no external dependencies
 ```
@@ -88,7 +89,7 @@ tests/                  # 31 tests, no external dependencies
 ## Roadmap
 
 - [x] Bronze ingestion with lineage columns and Iceberg partitioning
-- [ ] Silver layer: typing, dedup, trip-level validity rules
+- [x] Silver layer: typing, dedup, trip-level validity rules
 - [ ] Data quality gates that fail the job on contract violations
 - [ ] Gold aggregates: zone-level revenue and trip duration percentiles
 - [ ] dbt models over the Iceberg tables

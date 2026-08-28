@@ -31,6 +31,33 @@ def spark():
 
 
 @pytest.fixture
+def bronze_trips(spark):
+    """Normalised-column frame that mirrors bronze output, including invalid rows."""
+    rows = [
+        # two valid, distinct trips
+        (1, datetime(2024, 1, 2, 8, 30), datetime(2024, 1, 2, 8, 51), 132, 264, 1, 2.3, 10.0, 12.5),
+        (2, datetime(2024, 1, 2, 9, 5),  datetime(2024, 1, 2, 9, 17), 264, 132, 2, 1.1,  5.5,  7.25),
+        # exact duplicate of the first valid trip
+        (1, datetime(2024, 1, 2, 8, 30), datetime(2024, 1, 2, 8, 51), 132, 264, 1, 2.3, 10.0, 12.5),
+        # invalid: trip_distance is zero
+        (1, datetime(2024, 1, 3, 10, 0), datetime(2024, 1, 3, 10, 15), 100, 200, 1, 0.0, 4.0, 5.0),
+        # invalid: pickup after dropoff
+        (2, datetime(2024, 1, 3, 11, 0), datetime(2024, 1, 3, 10, 45), 100, 200, 1, 2.0, 4.0, 5.0),
+        # invalid: passenger_count is zero
+        (1, datetime(2024, 1, 4, 8, 0),  datetime(2024, 1, 4, 8, 30),  132, 264, 0, 3.0, 7.0, 8.0),
+    ]
+    return spark.createDataFrame(
+        rows,
+        schema=(
+            "vendor_id int, pickup_ts timestamp, dropoff_ts timestamp,"
+            " pickup_location_id int, dropoff_location_id int,"
+            " passenger_count int, trip_distance double,"
+            " fare_amount double, total_amount double"
+        ),
+    )
+
+
+@pytest.fixture
 def raw_trips(spark):
     """A miniature TLC-shaped frame using the original vendor column names."""
     rows = [
