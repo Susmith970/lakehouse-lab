@@ -21,6 +21,7 @@ from pyspark.sql.types import DoubleType, IntegerType
 
 from lakehouse.config import JobConfig, load_config
 from lakehouse.jobs.ingest_taxi import validate_month
+from lakehouse.quality import enforce, no_future_timestamps, not_empty, null_rate, value_range
 from lakehouse.session import session_scope
 from lakehouse.tables import ensure_namespace, overwrite_partitions
 
@@ -94,6 +95,16 @@ def run(spark: SparkSession, config: JobConfig, month: str, run_id: str | None =
 
     log.info("dropped %d rows (%.1f%%) as invalid or duplicate", bronze_count - silver_count,
              100 * (bronze_count - silver_count) / bronze_count if bronze_count else 0)
+
+    enforce(silver, [
+        not_empty(),
+        null_rate("vendor_id", max_rate=0.05),
+        null_rate("pickup_ts", max_rate=0.0),
+        value_range("total_amount", lo=0.01),
+        value_range("passenger_count", lo=1, hi=8),
+        value_range("trip_distance", lo=0.01),
+        no_future_timestamps("pickup_ts"),
+    ])
 
     ensure_namespace(spark, config.catalog.name, config.namespace)
     overwrite_partitions(silver, config.table(TABLE))
