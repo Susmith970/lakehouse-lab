@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import pytest
-
 from lakehouse.jobs.silver_taxi import (
     DEDUP_KEY,
     add_silver_columns,
@@ -10,7 +8,6 @@ from lakehouse.jobs.silver_taxi import (
     deduplicate,
     transform,
 )
-
 
 # ---------------------------------------------------------------------------
 # cast_types

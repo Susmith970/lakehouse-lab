@@ -36,7 +36,7 @@ def bronze_trips(spark):
     rows = [
         # two valid, distinct trips
         (1, datetime(2024, 1, 2, 8, 30), datetime(2024, 1, 2, 8, 51), 132, 264, 1, 2.3, 10.0, 12.5),
-        (2, datetime(2024, 1, 2, 9, 5),  datetime(2024, 1, 2, 9, 17), 264, 132, 2, 1.1,  5.5,  7.25),
+        (2, datetime(2024, 1, 2, 9, 5), datetime(2024, 1, 2, 9, 17), 264, 132, 2, 1.1, 5.5, 7.25),
         # exact duplicate of the first valid trip
         (1, datetime(2024, 1, 2, 8, 30), datetime(2024, 1, 2, 8, 51), 132, 264, 1, 2.3, 10.0, 12.5),
         # invalid: trip_distance is zero
