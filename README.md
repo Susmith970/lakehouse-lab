@@ -82,7 +82,8 @@ src/lakehouse/
 ├── quality.py          # quality gate framework (enforce, not_empty, null_rate, …)
 └── jobs/
     ├── ingest_taxi.py  # bronze ingestion
-    └── silver_taxi.py  # silver: cast, quality rules, dedup, quality gate
+    ├── silver_taxi.py  # silver: cast, quality rules, dedup, quality gate
+    └── gold_taxi.py    # gold: zone revenue + trip duration percentiles
 conf/                   # local.yaml (Hadoop catalog) / aws.yaml (Glue)
 tests/                  # 31 tests, no external dependencies
 ```
@@ -92,7 +93,7 @@ tests/                  # 31 tests, no external dependencies
 - [x] Bronze ingestion with lineage columns and Iceberg partitioning
 - [x] Silver layer: typing, dedup, trip-level validity rules
 - [x] Data quality gates that fail the job on contract violations
-- [ ] Gold aggregates: zone-level revenue and trip duration percentiles
+- [x] Gold aggregates: zone-level revenue and trip duration percentiles
 - [ ] dbt models over the Iceberg tables
 - [ ] Dagster assets replacing the CLI entry points
 - [ ] Table maintenance: compaction, snapshot expiry, orphan file cleanup

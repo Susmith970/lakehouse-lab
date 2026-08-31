@@ -58,6 +58,25 @@ def bronze_trips(spark):
 
 
 @pytest.fixture
+def silver_trips(spark):
+    """Clean silver-shaped frame: valid trips across two zones."""
+    rows = [
+        # zone 132 — two trips, 21 min and 15 min
+        (132, datetime(2024, 1, 2, 8, 30), datetime(2024, 1, 2, 8, 51), 12.5, 2.3, "2024-01"),
+        (132, datetime(2024, 1, 3, 9, 0), datetime(2024, 1, 3, 9, 15), 9.0, 1.8, "2024-01"),
+        # zone 264 — one trip, 12 min
+        (264, datetime(2024, 1, 2, 9, 5), datetime(2024, 1, 2, 9, 17), 7.25, 1.1, "2024-01"),
+    ]
+    return spark.createDataFrame(
+        rows,
+        schema=(
+            "pickup_location_id int, pickup_ts timestamp, dropoff_ts timestamp,"
+            " total_amount double, trip_distance double, _partition_month string"
+        ),
+    )
+
+
+@pytest.fixture
 def raw_trips(spark):
     """A miniature TLC-shaped frame using the original vendor column names."""
     rows = [
