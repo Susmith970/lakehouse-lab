@@ -93,18 +93,24 @@ def run(spark: SparkSession, config: JobConfig, month: str, run_id: str | None =
     silver = transform(bronze, run_id=run_id, month=month)
     silver_count = silver.count()
 
-    log.info("dropped %d rows (%.1f%%) as invalid or duplicate", bronze_count - silver_count,
-             100 * (bronze_count - silver_count) / bronze_count if bronze_count else 0)
+    log.info(
+        "dropped %d rows (%.1f%%) as invalid or duplicate",
+        bronze_count - silver_count,
+        100 * (bronze_count - silver_count) / bronze_count if bronze_count else 0,
+    )
 
-    enforce(silver, [
-        not_empty(),
-        null_rate("vendor_id", max_rate=0.05),
-        null_rate("pickup_ts", max_rate=0.0),
-        value_range("total_amount", lo=0.01),
-        value_range("passenger_count", lo=1, hi=8),
-        value_range("trip_distance", lo=0.01),
-        no_future_timestamps("pickup_ts"),
-    ])
+    enforce(
+        silver,
+        [
+            not_empty(),
+            null_rate("vendor_id", max_rate=0.05),
+            null_rate("pickup_ts", max_rate=0.0),
+            value_range("total_amount", lo=0.01),
+            value_range("passenger_count", lo=1, hi=8),
+            value_range("trip_distance", lo=0.01),
+            no_future_timestamps("pickup_ts"),
+        ],
+    )
 
     ensure_namespace(spark, config.catalog.name, config.namespace)
     overwrite_partitions(silver, config.table(TABLE))

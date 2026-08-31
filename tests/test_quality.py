@@ -104,9 +104,7 @@ def test_no_future_timestamps_passes_on_past_dates(bronze_trips):
 def test_no_future_timestamps_fails_on_future_date(spark):
     from datetime import datetime
 
-    df = spark.createDataFrame(
-        [(datetime(2099, 1, 1, 0, 0),)], schema="ts timestamp"
-    )
+    df = spark.createDataFrame([(datetime(2099, 1, 1, 0, 0),)], schema="ts timestamp")
     v = no_future_timestamps("ts")(df)
     assert v is not None
     assert "future" in v.detail
@@ -131,10 +129,13 @@ def test_enforce_raises_quality_error_on_failure(spark):
 def test_enforce_collects_all_violations_before_raising(spark):
     df = spark.createDataFrame([(-1.0,)], schema="x double")
     with pytest.raises(QualityError) as exc_info:
-        enforce(df, [
-            value_range("x", lo=0.0),
-            value_range("x", lo=0.0, hi=0.5),
-        ])
+        enforce(
+            df,
+            [
+                value_range("x", lo=0.0),
+                value_range("x", lo=0.0, hi=0.5),
+            ],
+        )
     assert len(exc_info.value.violations) == 2
 
 

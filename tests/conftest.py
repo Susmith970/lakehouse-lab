@@ -44,7 +44,7 @@ def bronze_trips(spark):
         # invalid: pickup after dropoff
         (2, datetime(2024, 1, 3, 11, 0), datetime(2024, 1, 3, 10, 45), 100, 200, 1, 2.0, 4.0, 5.0),
         # invalid: passenger_count is zero
-        (1, datetime(2024, 1, 4, 8, 0),  datetime(2024, 1, 4, 8, 30),  132, 264, 0, 3.0, 7.0, 8.0),
+        (1, datetime(2024, 1, 4, 8, 0), datetime(2024, 1, 4, 8, 30), 132, 264, 0, 3.0, 7.0, 8.0),
     ]
     return spark.createDataFrame(
         rows,
