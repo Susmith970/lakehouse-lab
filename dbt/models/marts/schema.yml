@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: zone_revenue
+    description: "Total and average revenue per pickup zone per month."
+    columns:
+      - name: pickup_location_id
+        description: "TLC taxi zone ID."
+        tests:
+          - not_null
+      - name: _partition_month
+        description: "Month this aggregate covers (YYYY-MM)."
+        tests:
+          - not_null
+      - name: trip_count
+        description: "Number of trips originating in this zone."
+        tests:
+          - not_null
+      - name: total_revenue
+        description: "Sum of total_amount for all trips in the zone and month."
+      - name: avg_revenue
+        description: "Mean total_amount per trip."
+      - name: avg_distance_miles
+        description: "Mean trip distance in miles."
+
+  - name: zone_duration_percentiles
+    description: "p50/p75/p95 trip duration in minutes per pickup zone per month."
+    columns:
+      - name: pickup_location_id
+        tests:
+          - not_null
+      - name: _partition_month
+        tests:
+          - not_null
+      - name: trip_count
+        tests:
+          - not_null
+      - name: p50_minutes
+        description: "Median trip duration in minutes."
+      - name: p75_minutes
+        description: "75th percentile trip duration in minutes."
+      - name: p95_minutes
+        description: "95th percentile trip duration in minutes."

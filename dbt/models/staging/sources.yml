@@ -1,0 +1,28 @@
+version: 2
+
+sources:
+  - name: lakehouse
+    description: "Iceberg tables written by the PySpark pipeline."
+    schema: taxi
+    tables:
+      - name: yellow_trips_silver
+        description: "Typed, deduplicated, quality-gated NYC yellow taxi trips."
+        columns:
+          - name: vendor_id
+            description: "TLC vendor identifier."
+          - name: pickup_ts
+            description: "Trip pickup timestamp."
+            tests:
+              - not_null
+          - name: dropoff_ts
+            description: "Trip dropoff timestamp."
+            tests:
+              - not_null
+          - name: pickup_location_id
+            description: "TLC taxi zone ID for the pickup location."
+          - name: total_amount
+            description: "Total fare charged to the passenger."
+          - name: _partition_month
+            description: "Partition key in YYYY-MM format."
+            tests:
+              - not_null

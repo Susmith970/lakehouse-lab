@@ -75,6 +75,29 @@ Swapping `conf/local.yaml` for `conf/aws.yaml` moves the same job from a local H
 ## Layout
 
 ```
+dbt/
+├── dbt_project.yml
+├── profiles.yml
+├── models/
+│   ├── staging/
+│   │   ├── sources.yml          # declares yellow_trips_silver as a source
+│   │   └── stg_silver_trips.sql # view with duration_minutes derived column
+│   └── marts/
+│       ├── zone_revenue.sql           # table: revenue aggregates per zone/month
+│       └── zone_duration_percentiles.sql  # table: p50/p75/p95 duration per zone/month
+└── tests/
+    ├── assert_revenue_nonnegative.sql
+    └── assert_duration_percentile_order.sql
+```
+
+Run the dbt layer after ingesting bronze and silver:
+
+```bash
+make dbt-run    # builds staging view + mart tables
+make dbt-test   # runs schema tests + singular assertions
+```
+
+```
 src/lakehouse/
 ├── config.py           # YAML + env config, frozen dataclasses
 ├── session.py          # SparkSession + Iceberg wiring
@@ -94,7 +117,7 @@ tests/                  # 31 tests, no external dependencies
 - [x] Silver layer: typing, dedup, trip-level validity rules
 - [x] Data quality gates that fail the job on contract violations
 - [x] Gold aggregates: zone-level revenue and trip duration percentiles
-- [ ] dbt models over the Iceberg tables
+- [x] dbt models over the Iceberg tables
 - [ ] Dagster assets replacing the CLI entry points
 - [ ] Table maintenance: compaction, snapshot expiry, orphan file cleanup
 - [ ] Terraform: S3 + Glue catalog + IAM

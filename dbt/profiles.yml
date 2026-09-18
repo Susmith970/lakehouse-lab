@@ -1,0 +1,15 @@
+lakehouse_lab:
+  target: local
+  outputs:
+    local:
+      type: spark
+      method: session
+      schema: taxi
+      threads: 2
+    aws:
+      type: spark
+      method: thrift
+      host: localhost
+      port: 10001
+      schema: taxi
+      threads: 4
