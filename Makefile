@@ -1,4 +1,4 @@
-.PHONY: install lint fmt check test ingest dbt-run dbt-test clean
+.PHONY: install lint fmt check test ingest dbt-run dbt-test dagster-dev clean
 
 install:
 	python -m pip install -e ".[dev]"
@@ -25,6 +25,9 @@ dbt-run:
 
 dbt-test:
 	cd dbt && dbt test --profiles-dir .
+
+dagster-dev:
+	dagster dev -m lakehouse.dagster
 
 clean:
 	rm -rf warehouse spark-warehouse metastore_db derby.log .pytest_cache .ruff_cache

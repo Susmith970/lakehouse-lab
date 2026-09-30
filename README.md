@@ -107,6 +107,10 @@ src/lakehouse/
     ├── ingest_taxi.py  # bronze ingestion
     ├── silver_taxi.py  # silver: cast, quality rules, dedup, quality gate
     └── gold_taxi.py    # gold: zone revenue + trip duration percentiles
+dagster/
+├── assets.py       # bronze_trips, silver_trips, gold_trips software-defined assets
+├── resources.py    # LakehouseConfigResource, SparkSessionResource
+└── definitions.py  # top-level Definitions — entry point for `dagster dev`
 conf/                   # local.yaml (Hadoop catalog) / aws.yaml (Glue)
 tests/                  # 31 tests, no external dependencies
 ```
@@ -118,7 +122,7 @@ tests/                  # 31 tests, no external dependencies
 - [x] Data quality gates that fail the job on contract violations
 - [x] Gold aggregates: zone-level revenue and trip duration percentiles
 - [x] dbt models over the Iceberg tables
-- [ ] Dagster assets replacing the CLI entry points
+- [x] Dagster assets replacing the CLI entry points
 - [ ] Table maintenance: compaction, snapshot expiry, orphan file cleanup
 - [ ] Terraform: S3 + Glue catalog + IAM
 - [ ] Dremio reflections over gold
